@@ -40,6 +40,8 @@ $users = @(
         phoneNumbers = @(
             @{ value = "+1234567890"; type = "mobile" }
         )
+        department   = "Engineering"
+        title        = "Software Engineer"
     }
 )
 
@@ -53,12 +55,9 @@ function ConvertTo-ScimJson {
     )
     $scimRepresentation = @{
         schemas = @("urn:ietf:params:scim:schemas:core:2.0:User")
-        id = $user.id
-        userName = $user.userName
-        name = $user.name
-        active = $user.active
-        emails = $user.emails
-        phoneNumbers = $user.phoneNumbers
+    }
+    foreach ($key in $user.Keys) {
+        $scimRepresentation[$key] = $user[$key]
     }
     return $scimRepresentation | ConvertTo-Json -Depth 10
 }
@@ -129,14 +128,11 @@ while ($listener.IsListening) {
     if ((($path -eq "/scim/users") -or ($path -eq "/scim/users/")) -and $request.HttpMethod -eq "POST") {
         $body = Read-RequestBody $request | ConvertFrom-Json
         $newId = ([int]$users[-1].id + 1).ToString()
-        $userObj = @{
-            id = $newId
-            userName = $body.userName
-            name = $body.name
-            active = $body.active
-            emails = $body.emails
-            phoneNumbers = $body.phoneNumbers
+        $userObj = @{}
+        foreach ($property in $body.PSObject.Properties) {
+            $userObj[$property.Name] = $property.Value
         }
+        $userObj["id"] = $newId
         $users += $userObj
         $response.StatusCode = 201
         $responseBody = ConvertTo-ScimJson -user $userObj -attributes @()
