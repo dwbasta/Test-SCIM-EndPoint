@@ -34,7 +34,7 @@ Invoke-RestMethod -Uri "http://hostname/SCIM/Users?filter=userName+eq+`"jdoe`"" 
   -Method Get
 ```
 
-### Test Get /User with Employee ID
+### Test Get /User with Object ID
 ```
 Invoke-RestMethod -Uri "https://hostname/SCIM/Users/2"`
  -Headers @{ "Authorization" = "Bearer yourAPIKey" } `
@@ -68,16 +68,33 @@ netsh http add sslcert ipport=0.0.0.0:443 certhash=<thumbprint> appid="{<your-gu
 
 
 ## Additional Attributes
-For the most part the SCIM endpoints loops through and does not need to add the code to handle new attributes sent over from the scim system.
-1.) Provision users on demand in the entra enterprise application
-![UserProvisioned](https://github.com/dwbasta/Basta_IG_Entra_SCIM_EndPoint/blob/powershell-addtions/Images/PVDefaultAttributes.png)
-2.) Check that default users are provisioned on the console of your SCIM endpoint (the Powershell terminal) 
-![ConsoleUserCreate](https://github.com/dwbasta/Basta_IG_Entra_SCIM_EndPoint/blob/powershell-addtions/Images/TerminalOutput.png)
-3.) Modify an attribute that you didnt already have on the entra user object and run ondemand provisioning again.
-![AttributeAdd](https://github.com/dwbasta/Basta_IG_Entra_SCIM_EndPoint/blob/powershell-addtions/Images/ProvisionAttributeUpdate.png)
-4.) Check the console to make sure one that we can update attributes and secondly dynamically add additional attributes even if not configure in the application.
-![ReviewConsole](https://github.com/dwbasta/Basta_IG_Entra_SCIM_EndPoint/blob/powershell-addtions/Images/ConsoleConfirmation.png)
+For the most part the SCIM endpoints loops through and only needs to add the code to handle new attributes at line 31 though 46. For example look athe following changes to John Doe account. We added the userType Property
+```
+$users = @(
+    @{
+        id           = "1"
+        userName     = "jdoe"
+        name         = @{ givenName = "John"; familyName = "Doe" }
+        active       = $true
+        emails       = @(
+            @{ value = "jdoe@example.com"; type = "work" }
+        )
+        phoneNumbers = @(
+            @{ value = "+1234567890"; type = "mobile" }
+        )
+        department   = "Engineering"
+        title        = "Software Engineer"
+        userType = "Member"
+    }
+)
+```
+1.) Add properties to the user mappings for instance employeeType as the source Attribute and userType as the TargetAttribute
+![UserProvisioned](/Images/UserMappingInscim.png)
 
+2.) Provision users on demand in the entra enterprise application 
 
+![UserProvisioned](Images/ProvisionAttributeUpdate.png)
+3.) Check that default users are provisioned by using the get user objectID we showcase above. Invoke-RestMethod -Uri "https://hostname/SCIM/Users/2"
 
-<meta name="google-site-verification" content="bwfq2dStYqtf7epTEanIUsvxPpJ30ZEv2Dom3VQlL5M" />
+![ReviewConsole](Images/ConsoleConfirmation2.png)
+
