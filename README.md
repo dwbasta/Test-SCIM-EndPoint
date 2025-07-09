@@ -90,8 +90,11 @@ $users = @(
 ```
 1.) Add properties to the user mappings for instance employeeType as the source Attribute and userType as the TargetAttribute
 ![UserProvisioned](/Images/UserMappingInscim.png)
-2.) Provision users on demand in the entra enterprise application
+
+2.) Provision users on demand in the entra enterprise application 
+
 ![UserProvisioned](Images/PVDefaultAttributes.png)
 3.) Check that default users are provisioned by using the get user objectID we showcase above. Invoke-RestMethod -Uri "https://hostname/SCIM/Users/2"
+
 ![ReviewConsole](Images/ConsoleConfirmation2.png)
 
