@@ -93,7 +93,7 @@ $users = @(
 
 2.) Provision users on demand in the entra enterprise application 
 
-![UserProvisioned](Images/PVDefaultAttributes.png)
+![UserProvisioned](Images/ProvisionAttributeUpdate.png)
 3.) Check that default users are provisioned by using the get user objectID we showcase above. Invoke-RestMethod -Uri "https://hostname/SCIM/Users/2"
 
 ![ReviewConsole](Images/ConsoleConfirmation2.png)
