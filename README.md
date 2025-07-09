@@ -89,9 +89,9 @@ $users = @(
 )
 ```
 1.) Add properties to the user mappings for instance employeeType as the source Attribute and userType as the TargetAttribute
-![UserProvisioned](https://github.com/dwbasta/Basta_IG_Entra_SCIM_EndPoint/blob/powershell-addtions/Images/UserMappingInscim.png)
+![UserProvisioned](/Images/UserMappingInscim.png)
 2.) Provision users on demand in the entra enterprise application
-![UserProvisioned](https://github.com/dwbasta/Basta_IG_Entra_SCIM_EndPoint/blob/powershell-addtions/Images/PVDefaultAttributes.png)
+![UserProvisioned](Images/PVDefaultAttributes.png)
 3.) Check that default users are provisioned by using the get user objectID we showcase above. Invoke-RestMethod -Uri "https://hostname/SCIM/Users/2"
-![ReviewConsole](https://github.com/dwbasta/Basta_IG_Entra_SCIM_EndPoint/blob/powershell-addtions/Images/ConsoleConfirmation2.png)
+![ReviewConsole](Images/ConsoleConfirmation2.png)
 
